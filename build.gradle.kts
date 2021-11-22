@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor("org.projectlombok:lombok:1.18.22")
     compileOnly("org.projectlombok:lombok:1.18.22")
     implementation("org.apache.curator:curator-recipes:5.2.0")
     implementation("com.google.guava:guava:31.0.1-jre")
