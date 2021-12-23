@@ -16,13 +16,19 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 public class ZkIdGenerator {
 
-    private final String path = "/zk-id";
+    private static final String[] AUX_ARRAY = {"", "0", "00", "000", "0000", "00000"};
+
+    private static final String path = "/zk-id";
 
     private final AtomicInteger atomicInteger = new AtomicInteger();
 
     private final AtomicReference<String> machinePrefix = new AtomicReference<>("");
 
-    private static final String[] AUX_ARRAY = {"", "0", "00", "000", "0000", "00000"};
+    private final String zkStr;
+
+    public ZkIdGenerator(String zkStr) {
+        this.zkStr = zkStr;
+    }
 
     /**
      * 通过zk获取不一样的机器号，机器号取有序节点最后三位
@@ -56,7 +62,7 @@ public class ZkIdGenerator {
             return;
         }
         try {
-            ZooKeeper zooKeeper = new ZooKeeper(ZooKeeperConstant.SERVERS, 30_000, null);
+            ZooKeeper zooKeeper = new ZooKeeper(zkStr, 30_000, null);
             final String s = zooKeeper.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
             if (s.length() > 3) {
                 machinePrefix.compareAndSet("", s.substring(s.length() - 3));

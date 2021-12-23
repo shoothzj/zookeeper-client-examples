@@ -33,8 +33,8 @@ public class LeaderElectionService {
 
     private final String zkPath;
 
-    public LeaderElectionService(String scene, String serverId, LeaderLatchListener listener) {
-        this.framework = CuratorFrameworkFactory.newClient(ZooKeeperConstant.SERVERS, new ExponentialBackoffRetry(1000, 3));
+    public LeaderElectionService(String zkStr, String scene, String serverId, LeaderLatchListener listener) {
+        this.framework = CuratorFrameworkFactory.newClient(zkStr, new ExponentialBackoffRetry(1000, 3));
         this.zkPath = String.format("/election/%s", scene);
         this.leaderLatch = new LeaderLatch(framework, zkPath, serverId);
         leaderLatch.addListener(listener);
