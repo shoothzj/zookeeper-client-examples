@@ -26,7 +26,7 @@ class ZkUtilTest {
         TestZkServer testZkServer = new TestZkServer();
         testZkServer.start();
         Configurator.setRootLevel(Level.INFO);
-        List<String> stats = ZkUtil.getZkStats("127.0.0.1", 2181);
+        List<String> stats = ZkUtil.getZkStats("127.0.0.1", testZkServer.getZkPort());
         Assertions.assertNotNull(stats);
         Assertions.assertTrue(stats.size() > 0);
         testZkServer.close();
